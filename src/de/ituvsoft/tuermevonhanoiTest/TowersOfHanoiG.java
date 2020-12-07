@@ -21,7 +21,7 @@ public class TowersOfHanoiG extends JFrame {
 		toh.setSize(1000, 600);
 		toh.setResizable(false);
 		toh.setLocationByPlatform(true);
-	
+		toh.add(new TannenTuerme());
 		//baeume = new TannenTuerme(maxSlices,liste);
 		//toh.add(baeume);
 		
@@ -36,11 +36,8 @@ public class TowersOfHanoiG extends JFrame {
 	
 	public static void main(String[] args) {
 		JFrame test = new TowersOfHanoiG();
-		test.setLayout(new OverlayLayout(test));
-		JPanel testPanel = new JPanel();
+		test.add(new TannenTuerme());
 		
-		testPanel.add(new Slice(5,200,400));
-		test.add(testPanel);
 	}
 
 	

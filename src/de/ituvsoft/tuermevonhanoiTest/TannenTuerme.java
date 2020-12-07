@@ -11,12 +11,16 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
-public class TannenTuerme extends Stylesheet implements ActionListener {
+public class TannenTuerme extends JPanel implements ActionListener {
 
+	Timer timer = new Timer(1, this);
 	
+	int x = 14;
+	int y = 15;
+	int velX = 5;
 	
-	public TannenTuerme(int maxSlices,ArrayList<Stack<Integer>> fTowers) {
-		
+	public TannenTuerme() {
+		timer.start();
 	
 		
 		
@@ -25,7 +29,14 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 	
 	
 	}
-	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		this.setBackground(new Color(0,0,0));
+		g.setColor(new Color(230,210,30));
+		g.fillRect(x, y, 20, 20);
+		timer.start();
+	}
 	
 	
 
@@ -43,13 +54,21 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		x = x+velX;
 		
+		if(x>=980) {
+			velX = -velX;
+		}
+		if(x<=0) {
+			velX = -velX;
+		}
+	repaint();
 	}
+	
 
 	
 	public static void main (String[] args) {
-		TowersOfHanoi.playTowers(5, true);
+		
 		
 		
 		

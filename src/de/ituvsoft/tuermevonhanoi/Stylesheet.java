@@ -16,7 +16,7 @@ public class Stylesheet extends JPanel {
 		boolean firstTime = true;
 		  int[] baumStammX = new int[] {200,500,800  };
 		  int[] baumStammY = new int[] {450,450,450};
-		  int bStammWidth = 20;
+		  int bStammWidth = 30;
 	
 		  
 		  
@@ -34,11 +34,11 @@ public class Stylesheet extends JPanel {
 
 			g.drawImage(hintergrundBild,0,0, this);
 			g.setColor(new Color(0x7b,0x59,0x42));
-			for(int i = 200; i<850;i+=300) {
-				g.fillRect(i, 450, bStammWidth, 240);	
+			
+			for(int i=0;i<3;i++) {
+				g.fillRect(baumStammX[i], baumStammY[i], bStammWidth, 240);
 				
-			}		
-		
+			}	
 			}
 			}
 		

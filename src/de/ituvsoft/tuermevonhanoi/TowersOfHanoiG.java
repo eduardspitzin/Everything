@@ -7,13 +7,13 @@ import java.util.Stack;
 import javax.swing.JPanel;
 public class TowersOfHanoiG extends JFrame {
 	
-	JFrame toh;
+
 	TannenTuerme baeume;
 	public int[] baumX;
 	public int[] baumY;
 	public int bStammWidth;
 	int maxSlices;
-	public TowersOfHanoiG(ArrayList<Stack<Integer>> liste) {
+	public TowersOfHanoiG(ArrayList<Stack<Integer>> liste,boolean pause) {
 		Stylesheet background = new Stylesheet();
 		baumX = background.baumStammX;
 		baumY = background.baumStammY;
@@ -24,7 +24,7 @@ public class TowersOfHanoiG extends JFrame {
 		this.setSize(1000, 600);
 		this.setResizable(false);
 		this.setLocationByPlatform(true);
-		baeume = new TannenTuerme(maxSlices,liste);
+		baeume = new TannenTuerme(liste,pause);
 		this.add(baeume);
 		
 	
@@ -35,7 +35,6 @@ public class TowersOfHanoiG extends JFrame {
 	public void refresh(ArrayList<Stack<Integer>> newTowers) {
 		baeume.setNewTowers(newTowers);
 		this.repaint();
-		
 	}
 		
 		
