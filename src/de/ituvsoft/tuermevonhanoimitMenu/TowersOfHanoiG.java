@@ -1,4 +1,4 @@
-package de.ituvsoft.tuermevonhanoi;
+package de.ituvsoft.tuermevonhanoimitMenu;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class TowersOfHanoiG extends JFrame {
 		this.setSize(1000, 600);
 		this.setResizable(false);
 		this.setLocationByPlatform(true);
-		baeume = new TannenTuerme(liste,pause);
+		//baeume = new TannenTuerme(liste,pause);
 		this.add(baeume);
 		
 	

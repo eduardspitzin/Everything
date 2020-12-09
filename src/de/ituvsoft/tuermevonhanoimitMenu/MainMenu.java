@@ -1,4 +1,4 @@
-package de.ituvsoft.tuermevonhanoi;
+package de.ituvsoft.tuermevonhanoimitMenu;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,9 +29,13 @@ public class MainMenu extends JFrame implements ActionListener {
 	PanelButton playAnimation;
 	PanelButton settings;
 	TannenTuerme animation;
-	ArrayList<Stack<Integer>> testTuerme;
+	JButton testknopf;
 	int scheiben = 5;
 	boolean pause = false;
+	
+	ArrayList<Stack<Integer>> towers;
+	
+	
 	
 	public MainMenu() {
 	this.setTitle("Die Türme von Hanoi");
@@ -53,16 +57,11 @@ public class MainMenu extends JFrame implements ActionListener {
 	this.add(halloText);
 	
 	this.add(Box.createRigidArea(new Dimension(0,30)));
+
 	
-	
-	ArrayList<Stack<Integer>> testTuerme = new ArrayList<Stack<Integer>>();
-	testTuerme.add(new Stack<Integer>());
-	testTuerme.add(new Stack<Integer>());
-	testTuerme.add(new Stack<Integer>());
-	testTuerme.get(0).add(1);
-	testTuerme.get(0).add(3);
-	testTuerme.get(0).add(2);
-	this.testTuerme = testTuerme;
+	testknopf = new JButton("testtest");
+	testknopf.addActionListener(this);
+	this.add(testknopf);
 	
 	playButton = new PanelButton("Hier kannst du es selbst mal versuchen!");
 	playButton.getButton().addActionListener(e->meldung());
@@ -77,6 +76,54 @@ public class MainMenu extends JFrame implements ActionListener {
 	this.setVisible(true);
 	}
 	
+
+
+
+	public void initTowers(int n) {
+
+		towers = new ArrayList<Stack<Integer>>();
+		towers.add(new Stack<Integer>());
+		towers.add(new Stack<Integer>());
+		towers.add(new Stack<Integer>());
+
+		for (int i = n; i > 0; i--) {
+			towers.get(0).push(i);
+		}
+		for (Stack<Integer> ausgabe : towers) {
+			System.out.println(ausgabe);
+		}
+		System.out.println(" ");
+
+	}
+	public void move(int n, int fromTower, int toTower, int usingTower, boolean pause) {
+
+		if (n >= 1) {
+
+			move(n - 1, fromTower, usingTower, toTower, pause);
+
+			towers.get(toTower - 1).push(towers.get(fromTower - 1).pop());
+			animation.setNewTowers(towers);
+			this.repaint();
+			
+			while(!animation.xRichtig || !animation.yRichtig || animation.paused ) {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			animation.xRichtig = false;
+			animation.yRichtig = false;
+	
+			for (Stack<Integer> ausgabe : towers) {
+				System.out.println(ausgabe);
+			}
+			System.out.println(" ");
+			move(n - 1, usingTower, toTower, fromTower, pause);
+		}
+
+	}
+	
 	
 	
 	
@@ -87,15 +134,20 @@ public class MainMenu extends JFrame implements ActionListener {
 	
 	public static void main(String[] args) {
 		MainMenu test = new MainMenu();
+		//test.animation();
 	}
 
 	public void animation() {
-		TowersOfHanoi algorithm = new TowersOfHanoi(scheiben,pause);
-		
-		animation = new TannenTuerme(testTuerme,false);
 		this.getContentPane().removeAll();
+		this.initTowers(5);
+		animation = new TannenTuerme(towers,false);
 		this.getContentPane().add(animation);
 		this.revalidate();
+		System.out.println("Ich bin bei Animation!");
+		this.move(5, 1, 3, 2, false);
+
+		
+
 		
 	}
 	
@@ -111,10 +163,9 @@ public class MainMenu extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==playButton) {
-			String m = JOptionPane.showInputDialog("Dieser Modus ist zur Zeit nicht verfügbar!");
-			System.out.println(m);
-			System.out.println("hallo");
+		if(e.getSource()==testknopf) {
+			System.out.println("Hey");
+			animation();
 		}
 		
 	}

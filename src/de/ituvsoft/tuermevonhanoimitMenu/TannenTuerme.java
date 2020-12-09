@@ -1,4 +1,4 @@
-package de.ituvsoft.tuermevonhanoi;
+package de.ituvsoft.tuermevonhanoimitMenu;
 import javax.swing.Timer;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -43,8 +43,8 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 	boolean paused;
 	int speed = 2;
 	public TannenTuerme(ArrayList<Stack<Integer>> fTowers,boolean pause) {
-		this.pause = pause;
 		newTowers = fTowers;
+		this.pause = pause;
 		this.baumX = super.baumStammX;
 		this.baumY = super.baumStammY;
 		this.bStammWidth = super.bStammWidth;
@@ -55,12 +55,12 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 		for(int i = 0;i<3;i++)
 			currentTowers.add(new Stack<Integer>());
 		deepCopy(newTowers,currentTowers);
+		System.out.println("Im Konstruktor");
 	}
 	
 	
-	
-	
 	private void drawSlices(Graphics g) {
+		System.out.println("bei Drawslices");
 		for(int i=0;i<3;i++) {
 			int vZahl = Integer.compare(currentTowers.get(i).size(), newTowers.get(i).size());
 			if(vZahl == 1) {
@@ -110,6 +110,7 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 	private void drawAnimation(Graphics g) {
 		g.fillRect(xSource, ySource, widthAn, height);
 		timer.start();
+		System.out.println("Bei animations");
 	}
 	
 	
@@ -130,6 +131,7 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("Bei actionperformante");
 		actualSlices = Integer.max(Integer.max(currentTowers.get(0).size(),currentTowers.get(1).size() ),currentTowers.get(2).size());
 		running = true;
 		xRichtig = xGoal == xSource;

@@ -1,4 +1,4 @@
-package de.ituvsoft.tuermevonhanoiTest;
+package de.ituvsoft.tuermevonhanoimitMenu;
 
 import java.awt.*;
 import java.awt.image.*;
