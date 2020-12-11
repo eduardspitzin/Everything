@@ -1,17 +1,11 @@
 package de.ituvsoft.tuermevonhanoimitMenu;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.*;
 
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-
-public class TowersOfHanoi extends Thread {
-	static boolean pause;
+public class TowersOfHanoi implements Runnable {
+	boolean setted;
+	boolean wait;
 	//public TowersOfHanoiG tGUI;
 	ArrayList<Stack<Integer>> towers;
 
@@ -38,7 +32,10 @@ public class TowersOfHanoi extends Thread {
 		move(5,1,3,2,false);
 		
 	}
-	
+	public void  setWaiting(boolean bool) {
+		wait = bool;
+		
+	}
 	
 	public void move(int n, int fromTower, int toTower, int usingTower, boolean pause) {
 
@@ -48,39 +45,22 @@ public class TowersOfHanoi extends Thread {
 
 			towers.get(toTower - 1).push(towers.get(fromTower - 1).pop());
 			
-			
-			
-
-				try {
-					Thread.sleep(100000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			
-			
-		
-	
+			wait = true;
 			for (Stack<Integer> ausgabe : towers) {
 				System.out.println(ausgabe);
 			}
 			System.out.println(" ");
+			while(wait) {
+				try {
+					Thread.sleep(5);
+			} catch (InterruptedException e) {				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			}
+			wait = false;
 			move(n - 1, usingTower, toTower, fromTower, pause);
 		}
 
-	}
-	public ArrayList<Stack<Integer>> getTowers(){
-		return towers;
-		
-		
-		
-	}
-	public static void playTowers(int n, boolean debug) {
-		TowersOfHanoi toh = new TowersOfHanoi(n);
-		toh.move(n, 1, 3, 2, debug);
-
-	}
-
-	public static void main(String[] args) {
-		playTowers(5, true);
 	}
 }

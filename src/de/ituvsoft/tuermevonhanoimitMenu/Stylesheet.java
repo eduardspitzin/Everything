@@ -17,7 +17,7 @@ public class Stylesheet extends JPanel {
 		  int[] baumStammX = new int[] {200,500,800  };
 		  int[] baumStammY = new int[] {450,450,450};
 		  int bStammWidth = 30;
-	
+		  int bStammHeight = 240;
 		  
 		  
 		public Stylesheet(){
@@ -36,7 +36,7 @@ public class Stylesheet extends JPanel {
 			g.setColor(new Color(0x7b,0x59,0x42));
 			
 			for(int i=0;i<3;i++) {
-				g.fillRect(baumStammX[i], baumStammY[i], bStammWidth, 240);
+				g.fillRect(baumStammX[i], baumStammY[i], bStammWidth, bStammHeight);
 				
 			}	
 			}

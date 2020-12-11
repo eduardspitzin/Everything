@@ -14,14 +14,16 @@ import javax.swing.JPanel;
 
 public class TannenTuerme extends Stylesheet implements ActionListener {
 	int x_coordinates;
-	
+	TowersOfHanoi algorithm;
 	int y_coordinates;
 	int xSource;
 	int ySource;
 	int widthAn;
 	int width;
+	int widthProduct;
 	int height = 40;
 	int bStammWidth;
+	int bStammHeight;
 	ArrayList<Stack<Integer>> currentTowers;
 	ArrayList<Stack<Integer>> newTowers;
 	int[] baumX;
@@ -42,25 +44,39 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 	int actualSlices;
 	boolean paused;
 	int speed = 2;
-	public TannenTuerme(ArrayList<Stack<Integer>> fTowers,boolean pause) {
-		newTowers = fTowers;
-		this.pause = pause;
-		this.baumX = super.baumStammX;
-		this.baumY = super.baumStammY;
-		this.bStammWidth = super.bStammWidth;
-		maxSlices = newTowers.get(0).size();
-		maxYStamm = Integer.min(Integer.min(baumY[0], baumY[1]),baumY[2]);// der Höchste Stamm
+	Thread algorithmThread;
+	int scheiben;
+	
+	public TannenTuerme(int scheiben,boolean pause) {
 		
+		this.scheiben = scheiben;
+		this.pause = pause;
+		this.bStammWidth = super.bStammWidth;
+		this.bStammHeight = super.bStammHeight;
+		widthProduct = 20;
+		// der Höchste Stamm
 		currentTowers = new ArrayList<Stack<Integer>>();
 		for(int i = 0;i<3;i++)
 			currentTowers.add(new Stack<Integer>());
-		deepCopy(newTowers,currentTowers);
-		System.out.println("Im Konstruktor");
+	
 	}
 	
+	public void start() {
+		algorithm = new TowersOfHanoi(scheiben);
+		newTowers = algorithm.towers;
+		deepCopy(newTowers,currentTowers);
+		maxSlices = newTowers.get(0).size();
+		this.baumX = super.baumStammX;
+		this.baumY = super.baumStammY;
+		maxYStamm = Integer.min(Integer.min(baumY[0], baumY[1]),baumY[2]);
+
+		
+		algorithmThread = new Thread(algorithm);
+		algorithmThread.start();
+		
+	}
 	
 	private void drawSlices(Graphics g) {
-		System.out.println("bei Drawslices");
 		for(int i=0;i<3;i++) {
 			int vZahl = Integer.compare(currentTowers.get(i).size(), newTowers.get(i).size());
 			if(vZahl == 1) {
@@ -84,7 +100,7 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 			{
 			xSource = x_coordinates;
 			ySource = y_coordinates;
-			widthAn = 20*currentTowers.get(j).get(i);	
+			widthAn = widthProduct*currentTowers.get(j).get(i);	
 			xGoal = baumX[incTowerNumber] -width/2+(bStammWidth/2); 
 			yGoal =baumY[incTowerNumber] -(height*(1+currentTowers.get(incTowerNumber).size()));// Baumstamm Y - Scheiben die drauf sind
 
@@ -103,14 +119,9 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 		
 	}
 	
-	
-	
-	
-	
 	private void drawAnimation(Graphics g) {
 		g.fillRect(xSource, ySource, widthAn, height);
 		timer.start();
-		System.out.println("Bei animations");
 	}
 	
 	
@@ -119,9 +130,7 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 	@Override 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-	
-			drawSlices(g);
-		
+		drawSlices(g);
 		if(dTowerNumber!=incTowerNumber) {
 			drawAnimation(g);
 		}
@@ -131,7 +140,6 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Bei actionperformante");
 		actualSlices = Integer.max(Integer.max(currentTowers.get(0).size(),currentTowers.get(1).size() ),currentTowers.get(2).size());
 		running = true;
 		xRichtig = xGoal == xSource;
@@ -148,28 +156,27 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 				xSource = xSource-speed;
 			}
 			
-			
-		
 		if(xRichtig && ySource<yGoal) {
 			ySource = ySource+speed*2;
 			
 		}
 		this.repaint();
 		if(xRichtig && yRichtig) {
+			System.out.println("Abschluss");
 			this.pause();
 			running = false;
 			for(int j=0;j<3;j++)
 				currentTowers.get(j).clear();
 			deepCopy(newTowers,currentTowers);
+			algorithm.wait = false;
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			}
 		}
-	
-	
-	public void setNewTowers(ArrayList<Stack<Integer>> newTowers) {
-		this.newTowers = newTowers;
-
-		
-	}
 	
 	private static void deepCopy(ArrayList<Stack<Integer>> copiedList, ArrayList<Stack<Integer>> inputList) {
 		for(int i = 0;i< copiedList.size();i++) {
@@ -198,19 +205,6 @@ public class TannenTuerme extends Stylesheet implements ActionListener {
 		}
 		paused = false;
 		timer.restart();
+		algorithm.setWaiting(false);
 	}
-	
-	
-	public static void main (String[] args) {
-		TowersOfHanoi.playTowers(5, true);
-		
-		
-		
-	}
-
-	
-	
-	
-	
-	}
-	
+}
