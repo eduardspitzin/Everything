@@ -30,7 +30,7 @@ public class TowersOfHanoi {
 			System.out.println(ausgabe);
 		}
 		System.out.println(" ");
-		tGUI = new TowersOfHanoiG(towers,pause);
+		//tGUI = new TowersOfHanoiG(towers,pause);
 
 	}
 
@@ -41,8 +41,8 @@ public class TowersOfHanoi {
 			move(n - 1, fromTower, usingTower, toTower, pause);
 
 			towers.get(toTower - 1).push(towers.get(fromTower - 1).pop());
-			tGUI.refresh(towers);
-			
+			//tGUI.refresh(towers);
+			/*
 			while (!tGUI.baeume.xRichtig || !tGUI.baeume.yRichtig || tGUI.baeume.paused) {
 
 				try {
@@ -51,9 +51,9 @@ public class TowersOfHanoi {
 					e.printStackTrace();
 				}
 			}
-
-			tGUI.baeume.xRichtig = false;
-			tGUI.baeume.yRichtig = false;
+*/
+			//tGUI.baeume.xRichtig = false;
+			//tGUI.baeume.yRichtig = false;
 			for (Stack<Integer> ausgabe : towers) {
 				System.out.println(ausgabe);
 			}
@@ -71,6 +71,6 @@ public class TowersOfHanoi {
 	}
 
 	public static void main(String[] args) {
-		playTowers(5, true);
+		playTowers(8, false);
 	}
 }

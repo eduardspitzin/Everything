@@ -18,14 +18,19 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 public class MainMenu extends JFrame implements ActionListener {
-
+	Options options;
 	JLabel halloText;
 	PanelButton playButton;
 	PanelButton playAnimation;
 	PanelButton settings;
 	TannenTuerme animation;
+	TannenTuerme newAnimation;
 	int scheiben = 5;
-	boolean pause = false;
+	int wallPaperNumber = 0;
+	int speedNumber = 1;
+	int wpNumberReset;
+	int sNumberReset;
+	boolean pause = true;
 	Color bgColor = new Color(0xcd1c2e);
 	ArrayList<Stack<Integer>> towers;
 
@@ -33,15 +38,34 @@ public class MainMenu extends JFrame implements ActionListener {
 
 		this.setTitle("Die Türme von Hanoi");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(1000, 600);
+		wpNumberReset = wallPaperNumber;
+		sNumberReset = speedNumber;
+
 		this.setResizable(false);
 		this.getContentPane().setBackground(bgColor);
 		this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		this.add(Box.createRigidArea(new Dimension(0, 30)));
+		resetAnimation();
 		menu();
-		animation = new TannenTuerme(scheiben, pause);
-
 		this.setVisible(true);
+
+	}
+
+	public void resetAnimation() {
+		if (animation != null) {
+			newAnimation = new TannenTuerme(animation.scheiben);
+			newAnimation.speed = animation.speed;
+			newAnimation.height = animation.height;
+			newAnimation.widthProduct = animation.widthProduct;
+			newAnimation.bStammHeight = animation.bStammHeight;
+			newAnimation.baumY = animation.baumY;
+			newAnimation.bStammWidth = animation.bStammWidth;
+			newAnimation.wallPaper = animation.wallPaper;
+			animation = newAnimation;
+		} else {
+			animation = new TannenTuerme(scheiben);
+		}
+		animation.setMenu(this);
 
 	}
 
@@ -50,9 +74,8 @@ public class MainMenu extends JFrame implements ActionListener {
 	}
 
 	public void menu() {
-		this.getContentPane().removeAll();
-		JLabel halloText = new JLabel("Willkommen zu den Türmen von Hanoi in der XMas-Edition!", SwingConstants.CENTER);
-
+		this.setSize(1000, 650);
+		halloText = new JLabel("Willkommen zu den Türmen von Hanoi in der XMas-Edition!", SwingConstants.CENTER);
 		halloText.setBackground(new Color(0xffffff));
 		halloText.setFont(new Font("Brush Script MT", Font.PLAIN, 45));
 		halloText.setForeground(new Color(0xffffff));
@@ -70,11 +93,12 @@ public class MainMenu extends JFrame implements ActionListener {
 		this.add(playButton);
 		this.add(playAnimation);
 		this.add(settings);
-
+		animation.setMenu(this);
 	}
 
 	public void animation() {
 		this.getContentPane().removeAll();
+		this.setSize(1280, 720);
 		this.getContentPane().add(animation);
 		animation.start();
 		this.revalidate();
@@ -83,7 +107,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
 	public void options() {
 		this.getContentPane().removeAll();
-		Options options = new Options(bgColor, animation,this);
+		options = new Options(bgColor, animation, this);
 		this.getContentPane().add(options);
 		this.revalidate();
 	}
